@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/plugins/">
+    <Project Path="plugins/NeuroCTF.SamplePlugin/NeuroCTF.SamplePlugin.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/NeuroCTF.Application/NeuroCTF.Application.csproj" />
+    <Project Path="src/NeuroCTF.Cli/NeuroCTF.Cli.csproj" />
+    <Project Path="src/NeuroCTF.Core/NeuroCTF.Core.csproj" />
+    <Project Path="src/NeuroCTF.Infrastructure/NeuroCTF.Infrastructure.csproj" />
+    <Project Path="src/NeuroCTF.Modules/NeuroCTF.Modules.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/NeuroCTF.Benchmarks/NeuroCTF.Benchmarks.csproj" />
+    <Project Path="tests/NeuroCTF.Fuzz/NeuroCTF.Fuzz.csproj" />
+    <Project Path="tests/NeuroCTF.Tests/NeuroCTF.Tests.csproj" />
+  </Folder>
+</Solution>

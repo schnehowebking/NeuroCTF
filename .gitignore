@@ -1,0 +1,49 @@
+# Build output
+bin/
+obj/
+out/
+artifacts/
+TestResults/
+coverage/
+
+# User and IDE files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.rsuser
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Local environment and secrets
+.env
+.env.*
+*.local.json
+appsettings.Development.json
+
+# Sessions and generated runtime state
+sessions/
+*.session.json
+
+# Benchmark and fuzz outputs
+benchmark-results/
+fuzz-results/
+
+# NuGet and packages
+packages/
+*.nupkg
+*.snupkg
+
+# Temporary files
+*.tmp
+*.temp
+~$*

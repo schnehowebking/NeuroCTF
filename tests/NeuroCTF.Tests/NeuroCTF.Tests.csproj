@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>NeuroCTF.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NeuroCTF.Core\NeuroCTF.Core.csproj" />
+    <ProjectReference Include="..\..\src\NeuroCTF.Application\NeuroCTF.Application.csproj" />
+    <ProjectReference Include="..\..\src\NeuroCTF.Infrastructure\NeuroCTF.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\NeuroCTF.Modules\NeuroCTF.Modules.csproj" />
+    <ProjectReference Include="..\..\src\NeuroCTF.Cli\NeuroCTF.Cli.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+</Project>

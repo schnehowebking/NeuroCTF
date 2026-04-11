@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>NeuroCTF.Cli</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NeuroCTF.Core\NeuroCTF.Core.csproj" />
+    <ProjectReference Include="..\NeuroCTF.Application\NeuroCTF.Application.csproj" />
+    <ProjectReference Include="..\NeuroCTF.Infrastructure\NeuroCTF.Infrastructure.csproj" />
+    <ProjectReference Include="..\NeuroCTF.Modules\NeuroCTF.Modules.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

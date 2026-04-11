@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security report
+    url: https://islamiyahtechs.com/contact
+    about: Please use a private channel for vulnerability disclosure.
