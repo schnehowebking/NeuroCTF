@@ -314,6 +314,92 @@
       line-height: 1.5;
     }
 
+    .promise-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .promise {
+      padding: 1.3rem;
+      border-radius: var(--radius-sm);
+      background:
+        linear-gradient(180deg, rgba(18, 30, 47, 0.94), rgba(10, 17, 29, 0.94)),
+        rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--line);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
+    }
+
+    .promise strong {
+      display: block;
+      font-size: 1.08rem;
+      margin-bottom: 0.6rem;
+      color: #f3f8ff;
+    }
+
+    .promise p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    .showcase {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .showcase-panel {
+      padding: 1.4rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at top right, rgba(255, 209, 102, 0.12), transparent 34%),
+        linear-gradient(180deg, rgba(11, 19, 32, 0.98), rgba(8, 15, 26, 0.98));
+      box-shadow: var(--shadow);
+    }
+
+    .quote {
+      margin: 0;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      line-height: 1.22;
+      letter-spacing: -0.03em;
+      max-width: 18ch;
+    }
+
+    .quote-byline {
+      margin-top: 0.9rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .highlight-list {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .highlight-item {
+      padding: 1rem 1.05rem;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--line);
+    }
+
+    .highlight-item strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 1rem;
+    }
+
+    .highlight-item span {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.93rem;
+    }
+
     .code-block {
       padding: 1.2rem;
       border-radius: var(--radius-sm);
@@ -324,6 +410,30 @@
       font-family: Consolas, "Courier New", monospace;
       line-height: 1.7;
       font-size: 0.92rem;
+    }
+
+    .cta-banner {
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      border: 1px solid rgba(73, 220, 177, 0.22);
+      background:
+        radial-gradient(circle at left center, rgba(73, 220, 177, 0.14), transparent 26%),
+        radial-gradient(circle at right center, rgba(104, 168, 255, 0.14), transparent 26%),
+        linear-gradient(180deg, rgba(8, 16, 28, 0.98), rgba(7, 13, 22, 0.98));
+      box-shadow: var(--shadow);
+    }
+
+    .cta-banner h2 {
+      margin: 0 0 0.7rem;
+      font-size: clamp(1.7rem, 3vw, 2.6rem);
+      letter-spacing: -0.03em;
+    }
+
+    .cta-banner p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 70ch;
+      line-height: 1.7;
     }
 
     .footer {
@@ -342,7 +452,9 @@
     @media (max-width: 980px) {
       .hero-grid,
       .card-grid,
-      .feature-strip {
+      .feature-strip,
+      .promise-grid,
+      .showcase {
         grid-template-columns: 1fr;
       }
 
@@ -429,6 +541,30 @@ url-recon[osint]</pre>
       </div>
     </section>
 
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Why People Will Want To Use It</h2>
+          <p class="section-note">A good security tool should feel useful on day one and exciting enough that people want to keep it in their toolkit.</p>
+        </div>
+      </div>
+
+      <div class="promise-grid">
+        <article class="promise">
+          <strong>From Raw Bytes to Real Leads</strong>
+          <p>Throw unknown data at NeuroCTF and it starts doing the boring, repetitive work for you: decode, inspect, extract, rank, and surface the outputs most likely to matter.</p>
+        </article>
+        <article class="promise">
+          <strong>Built For Security Tinkerers</strong>
+          <p>It is designed for CTF players, reverse engineers, and curious builders who want one extensible CLI instead of juggling a dozen throwaway scripts.</p>
+        </article>
+        <article class="promise">
+          <strong>Made To Grow With The Community</strong>
+          <p>Each module is a clear extension point, so contributors can ship meaningful features without wrestling the entire codebase first.</p>
+        </article>
+      </div>
+    </section>
+
     <section id="domains" class="section">
       <div class="section-head">
         <div>
@@ -492,6 +628,30 @@ url-recon[osint]</pre>
             <span class="tag">domain-recon</span>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="showcase">
+        <div class="showcase-panel">
+          <p class="quote">Imagine CyberChef, a plugin-ready offensive CLI, and a contributor-friendly security playground meeting in one repository.</p>
+          <div class="quote-byline">That is the direction behind NeuroCTF: a codebase that feels practical enough for real challenge-solving and inviting enough for open source collaboration.</div>
+        </div>
+
+        <div class="highlight-list">
+          <div class="highlight-item">
+            <strong>Fast First Win</strong>
+            <span>New users can get value immediately with `analyze`, `extract`, and `recon`, even before learning the deeper module system.</span>
+          </div>
+          <div class="highlight-item">
+            <strong>Serious Upgrade Path</strong>
+            <span>As the framework grows, it can become a shared workstation for crypto, pwn, reverse, forensics, stego, network, and web workflows.</span>
+          </div>
+          <div class="highlight-item">
+            <strong>Open Source Friendly</strong>
+            <span>Clear folders, plugin hooks, tests, fuzzing, and benchmarks make it easier for contributors to improve the project with confidence.</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -572,6 +732,17 @@ entropy</div>
 dotnet run --project .\tests\NeuroCTF.Tests\NeuroCTF.Tests.csproj
 dotnet run --project .\tests\NeuroCTF.Fuzz\NeuroCTF.Fuzz.csproj
 dotnet run --project .\tests\NeuroCTF.Benchmarks\NeuroCTF.Benchmarks.csproj</div>
+    </section>
+
+    <section class="section">
+      <div class="cta-banner">
+        <h2>Ship a tool people want to fork, extend, and show off.</h2>
+        <p>NeuroCTF is positioned to be more than a utility repo. With stronger marketing language, clear contributor flow, and a polished landing page, it can feel like a serious security toolkit people want to try, star, and build on.</p>
+        <div class="cta-row">
+          <a class="button button-primary" href="https://github.com/schnehowebking/NeuroCTF">Fork NeuroCTF</a>
+          <a class="button button-secondary" href="#contribute">See Contributor Path</a>
+        </div>
+      </div>
     </section>
   </main>
 

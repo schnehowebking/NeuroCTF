@@ -41,22 +41,30 @@ The project is intentionally structured so contributors can work on isolated mod
 
 ```powershell
 dotnet build .\NeuroCTF.slnx
-dotnet run --project .\src\NeuroCTF.Cli -- modules
-dotnet run --project .\src\NeuroCTF.Cli -- analyze --input "ZmxhZ3tuZXVyb30="
+.\neuroctf.cmd modules
+.\neuroctf.cmd analyze --input "ZmxhZ3tuZXVyb30="
 dotnet run --project .\tests\NeuroCTF.Tests\NeuroCTF.Tests.csproj
+```
+
+On Linux or macOS:
+
+```bash
+chmod +x ./neuroctf
+./neuroctf modules
+./neuroctf analyze --input "ZmxhZ3tuZXVyb30="
 ```
 
 ## Example Commands
 
 ```powershell
-dotnet run --project .\src\NeuroCTF.Cli -- analyze --file .\sample.bin
-dotnet run --project .\src\NeuroCTF.Cli -- decode --module base64 --input "ZmxhZ3t0ZXN0fQ=="
-dotnet run --project .\src\NeuroCTF.Cli -- bruteforce --module xor --input "..."
-dotnet run --project .\src\NeuroCTF.Cli -- exploit --module elf-sec --file .\a.out
-dotnet run --project .\src\NeuroCTF.Cli -- scan --file .\capture.pcap
-dotnet run --project .\src\NeuroCTF.Cli -- recon --input "https://ctf.example.com/challenge?id=42"
-dotnet run --project .\src\NeuroCTF.Cli -- extract --file .\archive.zip --out .\artifacts
-dotnet run --project .\src\NeuroCTF.Cli -- shell
+.\neuroctf.cmd analyze --file .\sample.bin
+.\neuroctf.cmd decode --module base64 --input "ZmxhZ3t0ZXN0fQ=="
+.\neuroctf.cmd bruteforce --module xor --input "..."
+.\neuroctf.cmd exploit --module elf-sec --file .\a.out
+.\neuroctf.cmd scan --file .\capture.pcap
+.\neuroctf.cmd recon --input "https://ctf.example.com/challenge?id=42"
+.\neuroctf.cmd extract --file .\archive.zip --out .\artifacts
+.\neuroctf.cmd shell
 ```
 
 ## Example Analysis Output
@@ -211,6 +219,28 @@ The project targets `.NET 10` in this repository because that is the latest inst
 
 ```powershell
 dotnet build .\NeuroCTF.slnx
+```
+
+### Simple Local Run Command
+
+From the repository root:
+
+```powershell
+.\neuroctf.cmd <command> [options]
+```
+
+Examples:
+
+```powershell
+.\neuroctf.cmd modules
+.\neuroctf.cmd analyze --input "ZmxhZ3tuZXVyb30="
+.\neuroctf.cmd recon --input "https://ctf.example.com/challenge?id=42"
+```
+
+On Linux or macOS:
+
+```bash
+./neuroctf <command> [options]
 ```
 
 ### Run Unit Tests
