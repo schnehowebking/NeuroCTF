@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NeuroCTF | Intelligent CTF Automation Framework</title>
+  <meta name="description" content="NeuroCTF is a modular CTF automation framework for decoding, extraction, reversing, pwn helpers, forensics, web analysis, network inspection, steganography, and OSINT workflows.">
+  <style>
+    :root {
+      --bg: #08111d;
+      --bg-soft: #101b2b;
+      --panel: rgba(16, 27, 43, 0.8);
+      --panel-strong: rgba(10, 18, 31, 0.92);
+      --line: rgba(157, 179, 204, 0.16);
+      --text: #e8f0fb;
+      --muted: #9fb3cc;
+      --accent: #49dcb1;
+      --accent-2: #68a8ff;
+      --accent-3: #ffd166;
+      --danger: #ff7a7a;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(73, 220, 177, 0.16), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(104, 168, 255, 0.18), transparent 24%),
+        linear-gradient(180deg, #09111c 0%, #07101a 55%, #050b14 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(var(--max), calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 13, 22, 0.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      width: min(var(--max), calc(100% - 2rem));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #041018;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 24px rgba(73, 220, 177, 0.25);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .hero {
+      padding: 5.5rem 0 3rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(104, 168, 255, 0.1);
+      border: 1px solid rgba(104, 168, 255, 0.22);
+      color: #b7d3ff;
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 5vw, 5rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      max-width: 11ch;
+    }
+
+    .headline-accent {
+      color: var(--accent);
+    }
+
+    .hero-copy {
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.7;
+      max-width: 64ch;
+      margin-top: 1.35rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 1.6rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.95rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--accent), #34c78f);
+      color: #03110c;
+      box-shadow: 0 20px 30px rgba(73, 220, 177, 0.18);
+    }
+
+    .button-secondary {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text);
+    }
+
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      padding: 1.3rem;
+      background: linear-gradient(180deg, rgba(18, 30, 47, 0.96), rgba(8, 15, 26, 0.96));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(104, 168, 255, 0.1), transparent 35%, rgba(73, 220, 177, 0.08));
+      pointer-events: none;
+    }
+
+    .terminal-bar {
+      display: flex;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
+    }
+
+    .terminal-dot {
+      width: 0.72rem;
+      height: 0.72rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .terminal {
+      margin: 0;
+      overflow-x: auto;
+      color: #d9ffe5;
+      font-size: 0.94rem;
+      line-height: 1.7;
+      font-family: Consolas, "Courier New", monospace;
+      white-space: pre-wrap;
+    }
+
+    .section {
+      padding: 2.4rem 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: -0.03em;
+    }
+
+    .section-note {
+      color: var(--muted);
+      max-width: 58ch;
+      line-height: 1.65;
+      font-size: 0.98rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      padding: 1.2rem;
+      border-radius: var(--radius-sm);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .card h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.08rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.9rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.36rem 0.62rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: #d8e8ff;
+      background: rgba(104, 168, 255, 0.1);
+      border: 1px solid rgba(104, 168, 255, 0.18);
+    }
+
+    .feature-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .stat {
+      padding: 1.1rem;
+      border-radius: var(--radius-sm);
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.7rem;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .code-block {
+      padding: 1.2rem;
+      border-radius: var(--radius-sm);
+      background: #09111c;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+      color: #dbecff;
+      font-family: Consolas, "Courier New", monospace;
+      line-height: 1.7;
+      font-size: 0.92rem;
+    }
+
+    .footer {
+      padding: 3rem 0 4rem;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .footer-box {
+      padding: 1.3rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .card-grid,
+      .feature-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head,
+      .topbar-inner {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark">N</span>
+        <span>NeuroCTF</span>
+      </a>
+      <nav class="nav">
+        <a href="#domains">Domains</a>
+        <a href="#commands">Commands</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#contribute">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="shell">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Open Source Security Tooling in .NET</div>
+          <h1>Build, break, decode, and extract with <span class="headline-accent">NeuroCTF</span>.</h1>
+          <p class="hero-copy">
+            NeuroCTF is a modular CTF automation framework for intelligent input analysis, recursive decoding, artifact carving, reverse-engineering helpers, pwn workflows, network inspection, steganography, and OSINT-style recon. Built for contributors who want a real codebase to extend.
+          </p>
+          <div class="cta-row">
+            <a class="button button-primary" href="https://github.com/schnehowebking">View Repository</a>
+            <a class="button button-secondary" href="#contribute">Start Contributing</a>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <div class="terminal-bar">
+            <span class="terminal-dot" style="background:#ff7a7a"></span>
+            <span class="terminal-dot" style="background:#ffd166"></span>
+            <span class="terminal-dot" style="background:#49dcb1"></span>
+          </div>
+          <pre class="terminal">$ neuroctf analyze --input eyJhbGciOiJub25lIn0.eyJmbGFnIjoiZmxhZ3tqd3R9In0.
+Source: inline
+Top candidate: [jwt]
+Preview: {"flag":"flag{jwt}"}
+Flags:
+  flag{jwt}
+
+$ neuroctf modules
+base32   [decode]
+jwt      [decode]
+pcap     [network]
+elf-sec  [pwn]
+url-recon[osint]</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="feature-strip">
+        <div class="stat">
+          <strong>25+</strong>
+          <span>Built-in modules across crypto, reverse, pwn, forensics, web, network, stego, and OSINT.</span>
+        </div>
+        <div class="stat">
+          <strong>Plugin Ready</strong>
+          <span>External DLL discovery with descriptor-based module catalog support.</span>
+        </div>
+        <div class="stat">
+          <strong>Fuzzed</strong>
+          <span>Includes a robustness harness for malformed and binary-heavy input flows.</span>
+        </div>
+        <div class="stat">
+          <strong>Benchmarked</strong>
+          <span>Hot-path benchmark harness included for regression tracking and optimization work.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="domains" class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Tool Domains</h2>
+          <p class="section-note">NeuroCTF is structured so each contributor can improve one domain without destabilizing the rest of the framework.</p>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>Crypto</h3>
+          <p>Base32, Base64, hex, XOR, Caesar, JWT-aware decoding, archive password hints, recursive transform chaining.</p>
+          <div class="tag-row">
+            <span class="tag">base32</span>
+            <span class="tag">xor</span>
+            <span class="tag">jwt</span>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Reverse Engineering</h3>
+          <p>Strings extraction, PE/ELF clues, .NET indicators, disassembly-lite, and lightweight control-flow inspection.</p>
+          <div class="tag-row">
+            <span class="tag">pe</span>
+            <span class="tag">elf</span>
+            <span class="tag">cfg-lite</span>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Pwn Helpers</h3>
+          <p>Cyclic pattern generation, offset finding, ELF security checks, and basic ROP gadget discovery.</p>
+          <div class="tag-row">
+            <span class="tag">pattern</span>
+            <span class="tag">elf-sec</span>
+            <span class="tag">rop-lite</span>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Forensics</h3>
+          <p>Binary carving, recursive archive traversal, artifact export, hidden data inspection, and entropy-driven heuristics.</p>
+          <div class="tag-row">
+            <span class="tag">extract</span>
+            <span class="tag">archive</span>
+            <span class="tag">entropy</span>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Web & Network</h3>
+          <p>HTTP request replay parsing, parameter discovery, PCAP-lite inspection, and suspicious protocol indicators.</p>
+          <div class="tag-row">
+            <span class="tag">http</span>
+            <span class="tag">pcap</span>
+            <span class="tag">params</span>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Stego & OSINT</h3>
+          <p>LSB extraction, URL/domain recon, and signal extraction helpers that can feed the broader analysis pipeline.</p>
+          <div class="tag-row">
+            <span class="tag">lsb</span>
+            <span class="tag">url-recon</span>
+            <span class="tag">domain-recon</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="commands" class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">CLI Surface</h2>
+          <p class="section-note">Top-level commands are designed for both hands-on use and future automation workflows.</p>
+        </div>
+      </div>
+      <div class="code-block">analyze     decode      exploit     scan
+extract     bruteforce  recon       modules
+shell       export      strings     xor
+base64      hexdump     filetype    hash
+entropy</div>
+    </section>
+
+    <section id="architecture" class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Architecture</h2>
+          <p class="section-note">Cleanly layered so contributors can extend one slice at a time.</p>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>Core</h3>
+          <p>Contracts, immutable models, options, and plugin abstractions that define the framework boundary.</p>
+        </article>
+        <article class="card">
+          <h3>Application</h3>
+          <p>Detection, scoring, orchestration, pipeline traversal, and shared module execution services.</p>
+        </article>
+        <article class="card">
+          <h3>Infrastructure</h3>
+          <p>Streaming I/O, plugin loading, report writing, config binding, and session persistence.</p>
+        </article>
+        <article class="card">
+          <h3>Modules</h3>
+          <p>Built-in feature units that keep domain behavior out of the CLI and directly analyzable by the engine.</p>
+        </article>
+        <article class="card">
+          <h3>CLI</h3>
+          <p>Command routing, shell state, export flow, and human-facing execution paths.</p>
+        </article>
+        <article class="card">
+          <h3>Tests</h3>
+          <p>Unit-style runner, fuzz harness, and benchmark harness for reliability and performance regression tracking.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contribute" class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Open Source Collaboration</h2>
+          <p class="section-note">The repository is organized so contributors can pick up a single module, parser, or infrastructure improvement and ship meaningful progress quickly.</p>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>Good First Areas</h3>
+          <p>Improved parsers, better heuristics, richer protocol support, plugin modules, fuzz cases, benchmark coverage, and documentation.</p>
+        </article>
+        <article class="card">
+          <h3>Validation Flow</h3>
+          <p>Run the solution build, test runner, fuzz harness, and benchmarks before opening a pull request.</p>
+        </article>
+        <article class="card">
+          <h3>Contributor Docs</h3>
+          <p>The repository includes `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, and GitHub issue and PR templates.</p>
+        </article>
+      </div>
+
+      <div class="code-block" style="margin-top:1rem;">dotnet build .\NeuroCTF.slnx
+dotnet run --project .\tests\NeuroCTF.Tests\NeuroCTF.Tests.csproj
+dotnet run --project .\tests\NeuroCTF.Fuzz\NeuroCTF.Fuzz.csproj
+dotnet run --project .\tests\NeuroCTF.Benchmarks\NeuroCTF.Benchmarks.csproj</div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <div class="footer-box">
+        <strong>NeuroCTF</strong>
+        <div style="margin-top:0.5rem;">Built for contributors who want a real security tooling codebase to improve. Publish this page with GitHub Pages by enabling Pages for the repository root or `/docs`.</div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
